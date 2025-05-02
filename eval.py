@@ -34,6 +34,14 @@ def evaluate_and_generate_submission(model, dataloader, classes, output_csv):
     # Save CSV
     df = pd.DataFrame(predictions)
     df.to_csv(output_csv, index=False)
+
+    # Remove trailing newline
+    with open(output_csv, "rb+") as f:
+        f.seek(-1, os.SEEK_END)
+        last_char = f.read(1)
+        if last_char == b"\n":
+            f.seek(-1, os.SEEK_END)
+            f.truncate()    
     print(f"Saved predictions to: {output_csv}")
 
 if __name__ == "__main__":
